@@ -27,3 +27,16 @@
 *.i*86
 *.x86_64
 *.hex
+Makefile.in
+README
+aclocal.m4
+autom4te.cache
+autoscan.log
+compile
+config.h.in
+configure
+configure.scan
+depcomp
+install-sh
+mkinstalldirs
+missing
