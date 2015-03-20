@@ -59,7 +59,7 @@ print_usage()
 int main(int argc, char* argv[])
 {
   int c;
-  unsigned char channel = -1;
+  unsigned char channel = 0;
   char remote_address[16];
 
   struct log *log = log_stdio_create();
@@ -92,7 +92,7 @@ int main(int argc, char* argv[])
     }
   }
 
-  if (channel == -1 || remote_address == NULL) {
+  if (channel == 0 || remote_address == NULL) {
     print_usage();
     return(EXIT_FAILURE);
   }

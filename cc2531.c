@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-#include <endian.h>
 
+#include "common.h"
 #include "log.h"
 #include "cc2531.h"
 

@@ -1,7 +1,3 @@
-#include <stdlib.h>
-#include <time.h>
-#include <endian.h>
-
 struct zep;
 
 struct zep_packet {
