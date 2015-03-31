@@ -24,6 +24,8 @@
 
 const unsigned long long EPOCH = 2208988800ULL;
 
+
+
 struct zep {
   struct log *log;
   unsigned char buf[ZEP_BUFFER_SIZE];
@@ -48,9 +50,12 @@ struct __attribute__((__packed__)) _zep_header_data {
 };
 
 int
-zep_send_packet(struct zep *zep, struct zep_packet *packet) {
+zep_send_packet(struct zep *zep, struct ieee802154_packet *packet) {
   struct timeval tv;
   int length = 0;
+  const char *frame_type;
+  uint16_t source_addr;
+  uint16_t dest_addr;
   
   log_msg(zep->log, LOG_LEVEL_DEBUG, "Sending ZEP packet for channel %d, device %04x, length %d", packet->channel, packet->device, packet->length);
 

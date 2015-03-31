@@ -1,14 +1,13 @@
+#ifndef ZEP_H
+#define ZEP_H
+
+#include "ieee802154.h"
+
 struct zep;
 
-struct zep_packet {
-  unsigned char channel;
-  unsigned short device;
-  unsigned char length;
-  unsigned char lqi;
-  unsigned char *data;
-};
-
-int zep_send_packet(struct zep *zep, struct zep_packet *packet);
+int zep_send_packet(struct zep *zep, struct ieee802154_packet *packet);
 
 struct zep *zep_create(struct log *log, char *remote_address);
 void zep_free(struct zep *zep);
+
+#endif /* ZEP_H */

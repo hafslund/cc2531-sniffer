@@ -4,10 +4,12 @@
 #include "log.h"
 
 void log_msg(struct log *log, enum log_level level, const char *fmt, ...) {
-  va_list ap;
-  va_start(ap, fmt);
-  log->vtable->msg(log, level, fmt, ap);
-  va_end(ap);
+  if (level >= log->level) {
+    va_list ap;
+    va_start(ap, fmt);
+    log->vtable->msg(log, level, fmt, ap);
+    va_end(ap);
+  }
 }
 
 void log_free(struct log *log) {
@@ -39,8 +41,9 @@ struct log_vtable log_stdio_vtable = {
 };
 
 struct log *
-log_stdio_create() {
+log_stdio_create(enum log_level level) {
   struct log_stdio *ls = malloc(sizeof(*ls));
+  ls->log.level = level;
   ls->log.vtable = &log_stdio_vtable;
   return &ls->log;
 }

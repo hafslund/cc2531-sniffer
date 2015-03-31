@@ -142,7 +142,7 @@ cc2531_create(struct log *log) {
     return log_err_null(log, "Failed to get the product: %d", r);
 
   log_msg(log, LOG_LEVEL_INFO, "Using CC2531 on USB bus %03d device %03d. Manufacturer: \"%s\" Product: \"%s\" Serial: %04x", libusb_get_bus_number(dev),
-          libusb_get_port_number(dev), desc_manufacturer, desc_product, desc.bcdDevice);
+          libusb_get_device_address(dev), desc_manufacturer, desc_product, desc.bcdDevice);
 
   /* Try and claim the device */
   r = libusb_claim_interface(dh, CC2531_INTERFACE);
@@ -150,6 +150,10 @@ cc2531_create(struct log *log) {
   case LIBUSB_SUCCESS: break;
   case LIBUSB_ERROR_BUSY:
     return log_err_null(log, "The USB device is in use by another program or driver.");
+  case LIBUSB_ERROR_NO_DEVICE:
+    return log_err_null(log, "The USB device has been disconnected.");
+  case LIBUSB_ERROR_NOT_FOUND:
+    return log_err_null(log, "The USB device was not found.");
   default:
     return log_err_null(log, "Failed to claim USB device: %d", r);
   }

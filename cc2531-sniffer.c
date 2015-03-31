@@ -7,6 +7,7 @@
 #include "log.h"
 #include "cc2531.h"
 #include "zep.h"
+#include "ieee802154.h"
 
 int 
 sniff(struct log *log, unsigned char channel, char *remote_address)
@@ -15,7 +16,8 @@ sniff(struct log *log, unsigned char channel, char *remote_address)
   struct zep *zep;
 
   struct cc2531_frame frame;
-  struct zep_packet packet;
+  struct ieee802154_packet packet;
+  char msg[256];
   int r;
   
   log_msg(log, LOG_LEVEL_DEBUG, "cc2531-sniffer initializing.");
@@ -31,11 +33,11 @@ sniff(struct log *log, unsigned char channel, char *remote_address)
     r = cc2531_get_next_packet(cc2531, &frame);
     if (r < 0) return -1;
 
-    packet.channel = channel;
-    packet.device = frame.device_id;
-    packet.length = frame.length;
-    packet.lqi = frame.rssi;
-    packet.data = frame.data;
+    ieee802154_decode(channel, frame.length, frame.data, frame.rssi, frame.device_id, &packet);
+
+    sprintf(msg, "%24s  %24s  %6s  %3d  %s", packet.src_addr, packet.dst_addr, 
+	    packet.pan_addr, packet.seq, packet.desc);
+    log_msg(log, LOG_LEVEL_INFO, msg);
 
     r = zep_send_packet(zep, &packet);
     if (r < 0) {
@@ -66,7 +68,7 @@ int main(int argc, char* argv[])
   unsigned char channel = 0;
   char remote_address[16];
 
-  struct log *log = log_stdio_create();
+  struct log *log = log_stdio_create(LOG_LEVEL_INFO);
   memset(remote_address, 0, 16);
   
   while (1) {

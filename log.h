@@ -1,4 +1,8 @@
+#ifndef LOG_H
+#define LOG_H
+
 #include <stdarg.h>
+#include <stdint.h>
 
 void log_init();
 
@@ -17,6 +21,7 @@ enum log_level {
     -1;})
 
 struct log {
+  enum log_level level;
   struct log_vtable *vtable;
 };
 
@@ -25,7 +30,10 @@ struct log_vtable {
   void (*free)(struct log *);
 };
 
-struct log *log_stdio_create();
+struct log *log_stdio_create(enum log_level level);
 
 void log_msg(struct log *log, enum log_level level, const char *fmt, ...);
 void log_free(struct log *log);
+
+#endif /* LOG_H */
+
