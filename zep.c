@@ -89,6 +89,8 @@ zep_send_packet(struct zep *zep, struct zep_packet *packet) {
       return log_err(zep->log, "No memory to send UDP packet");
     case ENOTCONN:
       return log_err(zep->log, "UDP socket not connected");
+    case ENOTSOCK:
+      return log_err(zep->log, "UDP socket fd is invalid");
     default:
       return log_err(zep->log, "Error sending UDP packet: %d", errno);
     }

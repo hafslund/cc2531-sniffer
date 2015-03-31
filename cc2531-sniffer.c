@@ -18,7 +18,7 @@ sniff(struct log *log, unsigned char channel, char *remote_address)
   struct zep_packet packet;
   int r;
   
-  log_msg(log, LOG_LEVEL_INFO, "cc2531-sniffer initializing.");
+  log_msg(log, LOG_LEVEL_DEBUG, "cc2531-sniffer initializing.");
 
   cc2531 = cc2531_create(log);
   if (cc2531 == NULL) return -1;
@@ -38,7 +38,11 @@ sniff(struct log *log, unsigned char channel, char *remote_address)
     packet.data = frame.data;
 
     r = zep_send_packet(zep, &packet);
-    if (r < 0) return -1;
+    if (r < 0) {
+      /* If sending fails, then re-open and move on */
+      zep_free(zep);
+      zep = zep_create(log, remote_address);
+    }
   }
   
   /* Clean up */
