@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "common.h"
 #include "ieee802154.h"
 
 static const char * const _frame_types[] = {"Beacon", "Data", "Ack"};
