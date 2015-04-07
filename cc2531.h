@@ -1,5 +1,5 @@
 #ifndef CC2531_H
-#define CC2531_h
+#define CC2531_H
 
 #define USB_VID 0x0451
 #define USB_PID 0x16ae
