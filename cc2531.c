@@ -233,7 +233,7 @@ cc2531_get_next_packet(struct cc2531 *cc2531, struct cc2531_frame *frame) {
 
   frame->length = cc2531->buf[7];
   frame->data = &cc2531->buf[8];
-  frame->rssi = frame->data[frame->length];
+  frame->rssi = frame->data[frame->length] - 73;
   frame->device_id = cc2531->device_id;
 
   return 0;
